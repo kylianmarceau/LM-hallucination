@@ -6,3 +6,5 @@ CS3043S-2.pdf
 
 **/__pycache__/
 *.py[cod]
+
+*.docx
