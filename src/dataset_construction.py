@@ -42,8 +42,11 @@ class COCOSubset:
             raise KeyError(f"Unknown image ID: {image_id}") from exc
 
 
-def load_coco_subset(annotation_path: str, image_dir: str):
-
+def load_coco_subset(
+    annotation_path: str,
+    image_dir: str,
+) -> COCOSubset:
+    
     annotation_file = Path(annotation_path).expanduser().resolve()
     images_directory = Path(image_dir).expanduser().resolve()
 
@@ -93,8 +96,10 @@ def load_coco_subset(annotation_path: str, image_dir: str):
 
     return COCOSubset(coco=coco,annotation_path=annotation_file,image_dir=images_directory,category_id_to_name=category_id_to_name,category_name_to_id=category_name_to_id,image_to_categories=image_to_categories,image_file_names=image_file_names)
 
-def compute_cooccurrence(coco: COCOSubset):
-    
+def compute_cooccurrence(
+    coco: COCOSubset,
+) -> dict[tuple[str, str], int]:
+        
     counts: defaultdict[tuple[str, str], int] = defaultdict(int)
 
     for image_id in coco.image_ids:
@@ -105,8 +110,12 @@ def compute_cooccurrence(coco: COCOSubset):
 
     return dict(counts)
 
-def sample_image_ids(coco: COCOSubset,n_images: int,seed: int):
-
+def sample_image_ids(
+    coco: COCOSubset,
+    n_images: int,
+    seed: int,
+) -> list[int]:
+    
     """Return a deterministic image-ID sample without replacement"""
 
     if n_images <= 0:
@@ -168,7 +177,12 @@ def _choose_adversarial_category(present_categories: list[str],absent_categories
     count, supporting_present = candidate_details[chosen_absent]
     return chosen_absent, supporting_present, count
 
-def build_question_set(coco: COCOSubset,image_ids: list[int],cooccurrence: dict[tuple[str, str], int],seed: int,):
+def build_question_set(
+    coco: COCOSubset,
+    image_ids: list[int],
+    cooccurrence: dict[tuple[str, str], int],
+    seed: int,
+) -> list[dict]:
     #return three deterministic existence-question records per image ID"""
 
     if seed < 0:
@@ -242,7 +256,10 @@ def build_question_set(coco: COCOSubset,image_ids: list[int],cooccurrence: dict[
 
     return questions
 
-def save_manifest(questions: list[dict[str, Any]], path: str):
+def save_manifest(
+    questions: list[dict],
+    path: str,
+) -> None:
     #Save question records as a byte reproducible CSV 
 
     output_path = Path(path).expanduser()
@@ -258,7 +275,9 @@ def save_manifest(questions: list[dict[str, Any]], path: str):
                 raise ValueError(f"Manifest record is missing fields: {missing}")
             writer.writerow(question)
 
-def load_manifest(path: str):
+def load_manifest(
+    path: str,
+) -> list[dict]:    
     """Load a CSV  and restore integer and Boolean field types"""
 
     input_path = Path(path).expanduser()
