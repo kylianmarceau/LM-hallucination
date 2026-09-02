@@ -5,7 +5,7 @@ from pathlib import Path
 import numpy as np
 import torch
 from PIL import Image
-from transformers import AutoModelForVision2Seq, AutoProcessor
+from transformers import AutoModelForImageTextToText, AutoProcessor
 
 class InferenceResult:
     def __init__(self, image_id, category, question_type, ground_truth, generated_text, parsed_answer, confidence, hidden_states):
@@ -19,11 +19,11 @@ class InferenceResult:
         self.hidden_states = hidden_states
 
 def load_model(model_name, device):
-    # use float32 on cpu and apple  for compatibility
+    # use float32 on cpu and apple for compatibility
     dtype = torch.float16 if device.startswith("cuda") else torch.float32
 
     processor = AutoProcessor.from_pretrained(model_name)
-    model = AutoModelForVision2Seq.from_pretrained(model_name, torch_dtype=dtype, attn_implementation="eager")
+    model = AutoModelForImageTextToText.from_pretrained(model_name, dtype=dtype, attn_implementation="eager")
     model.to(device)
     model.eval()
 
@@ -46,11 +46,11 @@ def run_single_example(model, processor, image, question, vision_cache=None):
     inputs = processor(text=prompt, images=[image], return_tensors="pt").to(model.device)
 
     with torch.inference_mode():
-        # reuse the image encoding for the three questions about the same image
+        # reuse the image encoding for questions about the same image
         if vision_cache is not None:
             if "features" not in vision_cache:
-                image_output = model.get_image_features(pixel_values=inputs["pixel_values"], pixel_attention_mask=inputs.get("pixel_attention_mask"), return_dict=True)
-                vision_cache["features"] = image_output.pooler_output
+                image_output = model.get_image_features(pixel_values=inputs["pixel_values"], pixel_attention_mask=inputs.get("pixel_attention_mask"))
+                vision_cache["features"] = image_output
 
             inputs.pop("pixel_values")
             inputs.pop("pixel_attention_mask", None)
@@ -124,4 +124,3 @@ def save_results(results, path):
 def load_results(path):
     with Path(path).open("rb") as input_file:
         return pickle.load(input_file)
-    
