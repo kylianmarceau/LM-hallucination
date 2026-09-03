@@ -8,3 +8,4 @@ CS3043S-2.pdf
 *.py[cod]
 
 *.docx
+data/*.pkl
