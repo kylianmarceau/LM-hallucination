@@ -1,0 +1,21 @@
+(.venv) kylianmarceau@kylians-MacBook-Air assignment2 % .venv/bin/python scripts/run_inference.py
+model: HuggingFaceTB/SmolVLM-256M-Instruct
+device: mps
+questions: 45
+generated answer: Yes.
+parsed answer: True
+confidence: 0.9115
+hidden state shape: (885, 576)
+runtime: 80.7 seconds
+saved results: /Users/kylianmarceau/Documents/AI/assignment2/data/debug_inference_results.pkl
+(.venv) kylianmarceau@kylians-MacBook-Air assignment2 % .venv/bin/python scripts/run_inference.py --full
+model: HuggingFaceTB/SmolVLM-256M-Instruct
+device: mps
+questions: 600
+generated answer: Yes.
+parsed answer: True
+confidence: 0.9115
+hidden state shape: (885, 576)
+runtime: 1249.5 seconds
+saved results: /Users/kylianmarceau/Documents/AI/assignment2/data/inference_results.pkl
+(.venv) kylianmarceau@kylians-MacBook-Air assignment2 % 
