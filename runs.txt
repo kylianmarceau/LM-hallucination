@@ -31,3 +31,10 @@ absent_random accuracy: 197/200 (98.50%)
 absent_adversarial accuracy: 196/200 (98.00%)
 (.venv) kylianmarceau@kylians-MacBook-Air assignment2 % 
     
+(.venv) kylianmarceau@kylians-MacBook-Air assignment2 % /Users/kylianmarceau/Documents/AI/assignment2/.venv/bin/python /Users/kylianmarceau/Documents/AI/assignment2/scripts/create_train_val_split.py
+training examples: 420
+validation examples: 180
+absent_adversarial: train=140, val=60
+absent_random: train=140, val=60
+present: train=140, val=60
+split saved to: /Users/kylianmarceau/Documents/AI/assignment2/data/train_val_split.json
