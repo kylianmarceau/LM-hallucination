@@ -5,3 +5,5 @@ pytest>=8,<9
 torch>=2,<3
 transformers>=4.46,<5
 Pillow>=10,<13
+
+scikit-learn>=1.5,<2
